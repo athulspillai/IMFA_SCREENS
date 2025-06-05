@@ -150,7 +150,7 @@ function getMeasurandValue(measurandData, id, isKwh = false) {
 async function updateDOM() {
     try {
         const xhr = new XMLHttpRequest();
-        const url = 'http://10.10.10.51:6005/api/getcdnuts';
+        const url = 'http://192.168.212.3:6005/api/getcdnuts';
 
         // Wrap XMLHttpRequest in a Promise
         const response = await new Promise((resolve, reject) => {
@@ -183,63 +183,63 @@ async function updateDOM() {
             hour12: true
         });
 
-    const headerTable = document.getElementById('header-table');
-    headerTable.innerHTML = '';
-    const headerRow1 = document.createElement('tr');
-    dataConfig.headerRow1.forEach(item => {
-        const td = document.createElement('td');
-        td.innerHTML = `
+        const headerTable = document.getElementById('header-table');
+        headerTable.innerHTML = '';
+        const headerRow1 = document.createElement('tr');
+        dataConfig.headerRow1.forEach(item => {
+            const td = document.createElement('td');
+            td.innerHTML = `
                 <div class="data-item">
                     <span class="data-item-label" style="color: ${item.labelStyle.color}">${item.label}</span>
                     <span class="data-item-value" style="color: ${item.valueStyle.color}">${getMeasurandValue(measurandData, item.id)}</span>
                 </div>`;
-        headerRow1.appendChild(td);
-    });
-    const headerRow2 = document.createElement('tr');
-    dataConfig.headerRow2.forEach(item => {
-        const td = document.createElement('td');
-        td.innerHTML = `
+            headerRow1.appendChild(td);
+        });
+        const headerRow2 = document.createElement('tr');
+        dataConfig.headerRow2.forEach(item => {
+            const td = document.createElement('td');
+            td.innerHTML = `
                 <div class="data-item">
                     <span class="data-item-label" style="color: ${item.labelStyle.color}">${item.label}</span>
                     <span class="data-item-value" style="color: ${item.valueStyle.color}">${getMeasurandValue(measurandData, item.id)}</span>
                 </div>`;
-        headerRow2.appendChild(td);
-    });
-    headerTable.appendChild(headerRow1);
-    headerTable.appendChild(headerRow2);
+            headerRow2.appendChild(td);
+        });
+        headerTable.appendChild(headerRow1);
+        headerTable.appendChild(headerRow2);
 
-    const generationTable = document.getElementById('generation-table');
-    generationTable.innerHTML = `
+        const generationTable = document.getElementById('generation-table');
+        generationTable.innerHTML = `
             <tr>
                 <td class="header-cell"></td>
                 <td class="header-cell">MW</td>
             </tr>`;
-    dataConfig.generation.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+        dataConfig.generation.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
                 <td class="row-label" style="${Object.entries(item.labelStyle).map(([k, v]) => `${k}: ${v}`).join(';')}">${item.label}</td>
                 <td class="data-cell" style="${Object.entries(item.valueStyle).map(([k, v]) => `${k}: ${v}`).join(';')}">${getMeasurandValue(measurandData, item.id)}</td>`;
-        generationTable.appendChild(tr);
-    });
+            generationTable.appendChild(tr);
+        });
 
-    const exportImportTable = document.getElementById('export-import-table');
-    exportImportTable.innerHTML = `
+        const exportImportTable = document.getElementById('export-import-table');
+        exportImportTable.innerHTML = `
             <tr>
                 <td class="header-cell"></td>
                 <td class="header-cell">MW</td>
                 <td class="header-cell">KWH</td>
             </tr>`;
-    dataConfig.exportImport.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+        dataConfig.exportImport.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
                 <td class="row-label" style="${Object.entries(item.labelStyle).map(([k, v]) => `${k}: ${v}`).join(';')}">${item.label}</td>
                 <td class="data-cell" style="${Object.entries(item.valueStyle).map(([k, v]) => `${k}: ${v}`).join(';')}">${getMeasurandValue(measurandData, item.mwId)}</td>
                 <td class="data-cell" style="${Object.entries(item.valueStyle).map(([k, v]) => `${k}: ${v}`).join(';')}">${getMeasurandValue(measurandData, item.kwhId, true)}</td>`;
-        exportImportTable.appendChild(tr);
-    });
+            exportImportTable.appendChild(tr);
+        });
 
-    const nextBlockTable = document.getElementById('next-block-table');
-    nextBlockTable.innerHTML = `
+        const nextBlockTable = document.getElementById('next-block-table');
+        nextBlockTable.innerHTML = `
             <tr>
                 ${dataConfig.nextBlockData.map(item => `<td class="subheader-cell">${item.label}</td>`).join('')}
             </tr>
@@ -247,17 +247,17 @@ async function updateDOM() {
                 ${dataConfig.nextBlockData.map(item => `<td class="data-cell">${getMeasurandValue(measurandData, item.id)}</td>`).join('')}
             </tr>`;
 
-    const demandTable = document.getElementById('demand-table');
-    demandTable.innerHTML = '';
-    dataConfig.demandAllocationDrawal.forEach(item => {
-        const drawalMwValue = parseFloat(getMeasurandValue(measurandData, item.drawalMwId));
-        const allocationMwValue = parseFloat(getMeasurandValue(measurandData, item.allocationMwId));
-        const drawalMwClass = (!isNaN(drawalMwValue) && !isNaN(allocationMwValue) && drawalMwValue > allocationMwValue) ? 'red-cell' : 'data-cell';
-        const drawalKwhValue = parseFloat(getMeasurandValue(measurandData, item.drawalKwhId, true));
-        const allocationKwhValue = parseFloat(getMeasurandValue(measurandData, item.allocationKwhId, true));
-        const drawalKwhClass = (!isNaN(drawalKwhValue) && !isNaN(allocationKwhValue) && drawalKwhValue > allocationKwhValue) ? 'red-cell' : 'data-cell';
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+        const demandTable = document.getElementById('demand-table');
+        demandTable.innerHTML = '';
+        dataConfig.demandAllocationDrawal.forEach(item => {
+            const drawalMwValue = parseFloat(getMeasurandValue(measurandData, item.drawalMwId));
+            const allocationMwValue = parseFloat(getMeasurandValue(measurandData, item.allocationMwId));
+            const drawalMwClass = (!isNaN(drawalMwValue) && !isNaN(allocationMwValue) && drawalMwValue > allocationMwValue) ? 'red-cell' : 'data-cell';
+            const drawalKwhValue = parseFloat(getMeasurandValue(measurandData, item.drawalKwhId, true));
+            const allocationKwhValue = parseFloat(getMeasurandValue(measurandData, item.allocationKwhId, true));
+            const drawalKwhClass = (!isNaN(drawalKwhValue) && !isNaN(allocationKwhValue) && drawalKwhValue > allocationKwhValue) ? 'red-cell' : 'data-cell';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
                 <td class="row-label" style="${Object.entries(item.labelStyle).map(([k, v]) => `${k}: ${v}`).join(';')}">${item.label}</td>
                 <td class="data-cell">${getMeasurandValue(measurandData, item.demandMwId)}</td>
                 <td class="data-cell">${getMeasurandValue(measurandData, item.demandKwhId, true)}</td>
@@ -265,53 +265,53 @@ async function updateDOM() {
                 <td class="data-cell">${getMeasurandValue(measurandData, item.allocationKwhId, true)}</td>
                 <td class="${drawalMwClass}">${getMeasurandValue(measurandData, item.drawalMwId)}</td>
                 <td class="${drawalKwhClass}">${getMeasurandValue(measurandData, item.drawalKwhId, true)}</td>`;
-        demandTable.appendChild(tr);
-    });
+            demandTable.appendChild(tr);
+        });
 
-    const firstComplexTable = document.getElementById('first-complex-table');
-    firstComplexTable.innerHTML = '';
-    dataConfig.firstTable.forEach(({ label, data }) => {
-        const tr = document.createElement('tr');
-        let cells = `<td class="row-label">${label}</td>`;
-        data.forEach(item => {
-            if (item.colSpan) {
-                cells += `<td class="data-cell" style="${Object.entries(item.style).map(([k, v]) => `${k}: ${v}`).join(';')}" colspan="${item.colSpan}">${getMeasurandValue(measurandData, item.id)}</td>`;
-            } else {
-                cells += `
+        const firstComplexTable = document.getElementById('first-complex-table');
+        firstComplexTable.innerHTML = '';
+        dataConfig.firstTable.forEach(({ label, data }) => {
+            const tr = document.createElement('tr');
+            let cells = `<td class="row-label">${label}</td>`;
+            data.forEach(item => {
+                if (item.colSpan) {
+                    cells += `<td class="data-cell" style="${Object.entries(item.style).map(([k, v]) => `${k}: ${v}`).join(';')}" colspan="${item.colSpan}">${getMeasurandValue(measurandData, item.id)}</td>`;
+                } else {
+                    cells += `
                         <td class="data-cell" style="${Object.entries(item.style).map(([k, v]) => `${k}: ${v}`).join(';')}">${getMeasurandValue(measurandData, item.mwId)}</td>
                         <td class="data-cell" style="${Object.entries(item.style).map(([k, v]) => `${k}: ${v}`).join(';')}">${getMeasurandValue(measurandData, item.kwhId, true)}</td>`;
-            }
+                }
+            });
+            tr.innerHTML = cells;
+            firstComplexTable.appendChild(tr);
         });
-        tr.innerHTML = cells;
-        firstComplexTable.appendChild(tr);
-    });
 
-    const secondComplexTable = document.getElementById('second-complex-table');
-    secondComplexTable.innerHTML = '';
-    dataConfig.secondTable.forEach(({ label, data }) => {
-        const tr = document.createElement('tr');
-        let cells = `<td class="row-label">${label}</td>`;
-        data.forEach(item => {
-            cells += `
+        const secondComplexTable = document.getElementById('second-complex-table');
+        secondComplexTable.innerHTML = '';
+        dataConfig.secondTable.forEach(({ label, data }) => {
+            const tr = document.createElement('tr');
+            let cells = `<td class="row-label">${label}</td>`;
+            data.forEach(item => {
+                cells += `
                     <td class="data-cell" style="${Object.entries(item.style).map(([k, v]) => `${k}: ${v}`).join(';')}">${getMeasurandValue(measurandData, item.mwId)}</td>
                     <td class="data-cell" style="${Object.entries(item.style).map(([k, v]) => `${k}: ${v}`).join(';')}">${getMeasurandValue(measurandData, item.kwhId, true)}</td>`;
+            });
+            tr.innerHTML = cells;
+            secondComplexTable.appendChild(tr);
         });
-        tr.innerHTML = cells;
-        secondComplexTable.appendChild(tr);
-    });
 
-    const blockPerformanceTable = document.getElementById('block-performance-table');
-    blockPerformanceTable.innerHTML = `
+        const blockPerformanceTable = document.getElementById('block-performance-table');
+        blockPerformanceTable.innerHTML = `
             <tr>
                 ${dataConfig.blockWisePerformance.flat().map(item => `<td class="subheader-cell">${item.label}</td>`).join('')}
             </tr>
             <tr>
                 ${dataConfig.blockWisePerformance.flat().map(item => `<td class="data-cell">${getMeasurandValue(measurandData, item.id)}</td>`).join('')}
             </tr>`;
-} catch (error) {
-    console.error('Error fetching CDNuts data:', error);
-    document.querySelectorAll('.data-cell, .data-item-value').forEach(el => el.textContent = 'Error');
-}
+    } catch (error) {
+        console.error('Error fetching CDNuts data:', error);
+        document.querySelectorAll('.data-cell, .data-item-value').forEach(el => el.textContent = 'Error');
+    }
 }
 
 window.onload = updateDOM;
