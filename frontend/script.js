@@ -149,7 +149,7 @@ function getMeasurandValue(measurandData, id, isKwh = false) {
 
 async function updateDOM() {
     try {
-        const response = await fetch('http://localhost:8000/api/cdnuts');
+        const response = await fetch('http://192.168.212.3:6005/api/getcdnuts');
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         const apiData = data[0];
